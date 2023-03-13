@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createTransaction } from "../../../features/transactionSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createTransaction, editEnd } from "../../../features/transaction/transactionSlice";
 
-const Form = () => {
+const Form = ({ edit, setEdit }) => {
+  const { isLoading, isError, error } = useSelector(
+    (state) => state.transaction
+  );
   const dispatch = useDispatch();
   const [form, setForm] = useState({
     name: "",
@@ -12,7 +15,13 @@ const Form = () => {
 
   const createHandler = (e) => {
     e.preventDefault();
-    dispatch(createTransaction(form));
+    dispatch(createTransaction({ ...form, amount: Number(form.amount) }));
+    setForm({
+      name: "",
+      type: "",
+      amount: "",
+    });
+    e.target.reset();
   };
   return (
     <>
@@ -86,12 +95,16 @@ const Form = () => {
               }
             />
           </div>
-          <button type="submit" className="btn">
-            Add Transaction
+          <button disabled={isLoading} type="submit" className="btn">
+            {isLoading ? "Posting" : "Add Transaction"}
           </button>
+          {!isLoading && isError && <p className="error">{error}</p>}
         </form>
 
-        <button className="btn cancel_edit">Cancel Edit</button>
+        {edit && <button onClick={(e) => {
+          dispatch(editEnd())
+          setEdit(false)
+        }} className="btn cancel_edit">Cancel Edit</button>}
       </div>
     </>
   );

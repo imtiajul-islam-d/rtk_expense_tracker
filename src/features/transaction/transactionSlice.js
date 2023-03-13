@@ -4,7 +4,7 @@ import {
   addTransaction,
   editTransaction,
   deleteTransaction,
-} from "./transaction/transactionAPI";
+} from "./transactionAPI";
 
 // initial state
 const initialState = {
@@ -12,6 +12,7 @@ const initialState = {
   isLoading: false,
   isError: false,
   error: "",
+  edit: null,
 };
 
 // async thunks
@@ -47,6 +48,14 @@ export const delTransaction = createAsyncThunk(
 const transactionSlice = createSlice({
   name: "transaction",
   initialState,
+  reducers: {
+    editing: (state, action) => {
+      state.edit = action.payload;
+    },
+    editEnd: (state, action) => {
+      state.edit = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTransaction.pending, (state) => {
@@ -58,7 +67,7 @@ const transactionSlice = createSlice({
         state.isError = false;
         state.isLoading = false;
         state.error = "";
-        state.transactions.push(action.payload);
+        state.transactions = action.payload;
       })
       .addCase(fetchTransaction.rejected, (state, action) => {
         state.isLoading = false;
@@ -123,3 +132,4 @@ const transactionSlice = createSlice({
 });
 
 export default transactionSlice.reducer;
+export const { editing, editEnd } = transactionSlice.actions;
