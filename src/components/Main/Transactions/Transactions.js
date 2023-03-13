@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTransaction } from "../../../features/transaction/transactionSlice";
 import Transaction from "./Transaction";
 
-const Transactions = ({setEdit}) => {
+const Transactions = ({setEditMode}) => {
   const { transactions, isLoading, isError, error } = useSelector(
     (state) => state.transaction
   );
@@ -17,7 +17,7 @@ const Transactions = ({setEdit}) => {
   if (isLoading) content = <div>Loading...</div>;
   if (!isLoading && isError) content = <div className="erro">{error}</div>;
   if (!isLoading && !isError && transactions.length > 0) {
-    content = transactions?.map((t) => <Transaction key={t.id} item={t} setEdit={setEdit} />);
+    content = transactions?.map((t) => <Transaction key={t.id} item={t} setEditMode={setEditMode} />);
   }
   if (!isLoading && !isError && transactions.length === 0) {
     content = <div>No data found!!</div>;

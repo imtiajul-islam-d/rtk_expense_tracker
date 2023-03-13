@@ -4,7 +4,7 @@ import deleteIcon from "./../../../images/delete.svg";
 import { useDispatch } from "react-redux";
 import { editing } from "../../../features/transaction/transactionSlice";
 
-const Transaction = ({ item, setEdit }) => {
+const Transaction = ({ item, setEditMode }) => {
   const { name, amount, type } = item || {};
   const dispatch = useDispatch();
   return (
@@ -16,7 +16,7 @@ const Transaction = ({ item, setEdit }) => {
           <button
             onClick={() => {
               dispatch(editing(item));
-              setEdit(true);
+              setEditMode(true);
             }}
             className="link"
           >

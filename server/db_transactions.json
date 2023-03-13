@@ -7,10 +7,16 @@
       "amount": 1000000
     },
     {
-      "id": 2,
       "name": "Family Expenses",
       "type": "expense",
-      "amount": 200000
+      "amount": "200000",
+      "id": 2
+    },
+    {
+      "name": "Salary from Google",
+      "type": "expense",
+      "amount": 1000000,
+      "id": 3
     }
   ]
 }

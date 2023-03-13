@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createTransaction, editEnd } from "../../../features/transaction/transactionSlice";
+import {
+  createTransaction,
+  editEnd,
+  modifyTransaction,
+} from "../../../features/transaction/transactionSlice";
 
-const Form = ({ edit, setEdit }) => {
-  const { isLoading, isError, error } = useSelector(
+const Form = ({ editMode, setEditMode }) => {
+  const { isLoading, isError, error, edit } = useSelector(
     (state) => state.transaction
   );
   const dispatch = useDispatch();
@@ -23,11 +27,38 @@ const Form = ({ edit, setEdit }) => {
     });
     e.target.reset();
   };
+  const editHandler = (e) => {
+    e.preventDefault();
+    dispatch(modifyTransaction({ id: edit?.id, data: form }));
+    setForm({
+      name: "",
+      type: "",
+      amount: "",
+    });
+    e.target.reset();
+    setEditMode(false);
+    dispatch(editEnd());
+  };
+  useEffect(() => {
+    if (edit) {
+      setForm({
+        name: edit.name,
+        type: edit.type,
+        amount: edit.amount,
+      });
+    } else {
+      setForm({
+        name: "",
+        type: "",
+        amount: "",
+      });
+    }
+  }, [edit]);
   return (
     <>
       <div className="form">
         <h3>Add new transaction</h3>
-        <form onSubmit={createHandler}>
+        <form onSubmit={edit ? editHandler : createHandler}>
           <div className="form-group">
             <label>Name</label>
             <input
@@ -87,6 +118,7 @@ const Form = ({ edit, setEdit }) => {
               type="number"
               placeholder="Enter amount"
               name="amount"
+              value={form.amount}
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -95,16 +127,29 @@ const Form = ({ edit, setEdit }) => {
               }
             />
           </div>
-          <button disabled={isLoading} type="submit" className="btn">
-            {isLoading ? "Posting" : "Add Transaction"}
-          </button>
+          {edit ? (
+            <button disabled={isLoading} type="submit" className="btn">
+              {isLoading ? "Editing" : "Edit Transaction"}
+            </button>
+          ) : (
+            <button disabled={isLoading} type="submit" className="btn">
+              {isLoading ? "Posting" : "Add Transaction"}
+            </button>
+          )}
           {!isLoading && isError && <p className="error">{error}</p>}
         </form>
 
-        {edit && <button onClick={(e) => {
-          dispatch(editEnd())
-          setEdit(false)
-        }} className="btn cancel_edit">Cancel Edit</button>}
+        {editMode && (
+          <button
+            onClick={(e) => {
+              dispatch(editEnd());
+              setEditMode(false);
+            }}
+            className="btn cancel_edit"
+          >
+            Cancel Edit
+          </button>
+        )}
       </div>
     </>
   );
