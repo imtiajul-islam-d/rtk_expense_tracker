@@ -81,6 +81,45 @@ const transactionSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.error = action.error?.message;
+      })
+      .addCase(modifyTransaction.pending, (state) => {
+        state.isError = false;
+        state.isLoading = true;
+        state.error = "";
+      })
+      .addCase(modifyTransaction.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.error = "";
+        const indexToUpdate = state.transactions.findIndex(
+          (t) => t.id === action.payload.id
+        );
+        state.transactions[indexToUpdate] = action.payload;
+      })
+      .addCase(modifyTransaction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.error = action.error?.message;
+      })
+      .addCase(delTransaction.pending, (state) => {
+        state.isError = false;
+        state.isLoading = true;
+        state.error = "";
+      })
+      .addCase(delTransaction.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.error = "";
+        state.transactions = state.transactions.filter(
+          (t) => t.id !== action.payload.id
+        );
+      })
+      .addCase(delTransaction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.error = action.error?.message;
       });
   },
 });
+
+export default transactionSlice.reducer;
