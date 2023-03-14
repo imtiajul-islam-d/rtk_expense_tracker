@@ -1,15 +1,15 @@
 {
   "transactions": [
     {
-      "id": 1,
-      "name": "Salary from Google",
+      "name": "salary",
       "type": "income",
-      "amount": 1000000
+      "amount": 40000,
+      "id": 1
     },
     {
-      "name": "Salary from Google",
-      "type": "expense",
-      "amount": 1000000,
+      "name": "salary",
+      "type": "income",
+      "amount": 100000,
       "id": 3
     }
   ]
