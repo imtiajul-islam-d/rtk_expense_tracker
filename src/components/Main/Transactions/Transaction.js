@@ -2,10 +2,13 @@ import React from "react";
 import editIcon from "./../../../images/edit.svg";
 import deleteIcon from "./../../../images/delete.svg";
 import { useDispatch } from "react-redux";
-import { editing } from "../../../features/transaction/transactionSlice";
+import {
+  delTransaction,
+  editing,
+} from "../../../features/transaction/transactionSlice";
 
 const Transaction = ({ item, setEditMode }) => {
-  const { name, amount, type } = item || {};
+  const { id, name, amount, type } = item || {};
   const dispatch = useDispatch();
   return (
     <>
@@ -22,7 +25,7 @@ const Transaction = ({ item, setEditMode }) => {
           >
             <img className="icon" src={editIcon} alt="Edit" />
           </button>
-          <button className="link">
+          <button onClick={() => dispatch(delTransaction(id))} className="link">
             <img className="icon" src={deleteIcon} alt="delete" />
           </button>
         </div>
