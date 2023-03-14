@@ -6,6 +6,7 @@ import {
   delTransaction,
   editing,
 } from "../../../features/transaction/transactionSlice";
+import numberWithCommas from "../../../utils/thousandSeparators";
 
 const Transaction = ({ item, setEditMode }) => {
   const { id, name, amount, type } = item || {};
@@ -15,7 +16,7 @@ const Transaction = ({ item, setEditMode }) => {
       <li className={`transaction ${type}`}>
         <p>{name}</p>
         <div className="right">
-          <p>৳ {amount}</p>
+          <p>৳ {numberWithCommas(amount)}</p>
           <button
             onClick={() => {
               dispatch(editing(item));

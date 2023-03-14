@@ -11,6 +11,12 @@
       "type": "income",
       "amount": 100000,
       "id": 3
+    },
+    {
+      "name": "Family Expenses",
+      "type": "expense",
+      "amount": 4000,
+      "id": 4
     }
   ]
 }
